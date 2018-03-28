@@ -16,7 +16,7 @@
             <br>
             <input class="form-control" placeholder="name"/>
             <br>
-            <button class="btn btn-sucess"></button>
+            <button class="btn btn-sucess" id="send"></button>
             
         </div>
         <div id="messages">
@@ -31,7 +31,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
     $(() => { //this is the short hand version of the doc ready event
-        addMessages({name: 'Tim', message: 'hello'});
+        $('#send').click(() =>{ // => {} this is equivalent to passing a callback
+            addMessages({name: 'Tim', message: 'hello'});
+            
+        });
+            
     });
     
     function addMessages(message) {
