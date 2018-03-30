@@ -4,6 +4,10 @@
 let express = require('express');
 let app = express();
 
+app.get('/messages', (req, res) =>{
+	res.send('Hello!')
+});
+
 app.use(express.static(__dirname));
 
 let server = app.listen(3000, () => {
