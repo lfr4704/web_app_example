@@ -4,11 +4,19 @@
 let express = require('express');
 let app = express();
 
+app.use(express.static(__dirname));
+
+var messages = [
+{ name: 'Tim', message: 'Hi'},
+{ name: 'Jane', message: 'Hello'}
+]
+
+
 app.get('/messages', (req, res) =>{
-	res.send('Hello!')
+	res.send('messages!')
 });
 
-app.use(express.static(__dirname));
+
 
 let server = app.listen(3000, () => {
     
