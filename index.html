@@ -19,7 +19,9 @@
         <div class="jumbotron">
             <h1 class="display-4">Send Message</h1>
             <br>
-            <input class="form-control" placeholder="name"/>
+            <input id="name" class="form-control" placeholder="name"/>
+            <br>
+            <textarea id="message" class="form-control" placeholder="message"/></textarea>
             <br>
             <button id="send" class="btn btn-success">Send</button>
             
@@ -34,7 +36,8 @@
 <script>
     $(() => { //this is the short hand version of the doc ready event
         $('#send').click(() =>{ // => {} this is equivalent to passing a callback
-            addMessages({name: 'Tim', message: 'hello'});
+            let message = {name: $("#name").val(), message: $("#message").val()};
+            postMessages(message);
             
         });
 
@@ -50,6 +53,10 @@
         $.get('http://localhost:3000/messages', (data) =>{
             data.forEach(addMessages);
         });
+    }
+
+        function postMessages(message) {
+        $.post('http://localhost:3000/messages', message);
     }
     
 </script>

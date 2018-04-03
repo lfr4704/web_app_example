@@ -8,6 +8,7 @@ let app = express();  //this sets reference to an instance of express
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 let messages = [
 { name: 'Tim', message: 'Hi'},
@@ -20,7 +21,7 @@ app.get('/messages', (req, res) =>{
 });
 
 app.post('/messages', (req, res) =>{
-	console.log(req.body);
+	messages.push(req.body);
 	res.sendStatus(200);
 });
 
