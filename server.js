@@ -2,35 +2,53 @@
 //then install express.js dependency (npm install -S express) or (npm install express --save) "-S" saves the dependency to json package
 //then create gitignore file. refer to this link for how to create file in windows https://stackoverflow.com/questions/10744305/how-to-create-gitignore-file
 //then install nodemon (npm install -g nodemom) "-g" means globally so it can be used no matter what project you are working on 
-//then install socket.io (npm install -s socket.io)
+//then install socket.io (npm install -s socket.io)  socket allows you to connect both frontend and backend
+//then install mongoose (npm install -s mongoose) Mongoose is a database that works with mongoDB
 let express = require('express');
 let bodyParser = require('body-parser');
 let app = express();  //this sets reference to an instance of express
 let http = require('http').Server(app);
-var io = require('socket.io')(http);
+let io = require('socket.io')(http);
+let mongoose = require('mongoose');
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-let messages = [
-{ name: 'Tim', message: 'Hi'},
-{ name: 'Jane', message: 'Hello'}
-];
+let dbUrl = 'mongodb://user:user@ds231719.mlab.com:31719/learning-node';
 
+let Message = mongoose.model('Message', { 
+	name: String,
+	message: String
+});
 
 app.get('/messages', (req, res) =>{
-	res.send(messages);
+	Message.find({}, (err, messages)=>{
+		res.send(messages);
+	});
+	
 });
 
 app.post('/messages', (req, res) =>{
-	messages.push(req.body);
-	io.emit('message', req.body);
-	res.sendStatus(200);
+	let message = new Message(req.body);
+
+	message.save((err)=>{
+		if (err)
+			sendStatus(500);
+			
+		io.emit('message', req.body);
+		res.sendStatus(200);
+	});
+
 });
 
 io.on('connection', (socket)=>{
 console.log('a user connected');
+});
+
+
+mongoose.connect(dbUrl, (err) =>{
+	console.log('mongoDB connection', err);
 });
 
 //for windows to run "localhost:3000/messages" the server.js needs be running in the command line "node server.js"
