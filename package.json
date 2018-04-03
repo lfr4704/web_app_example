@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/lfr4704/web_app_example/issues"
   },
-  "homepage": "https://github.com/lfr4704/web_app_example#readme"
+  "homepage": "https://github.com/lfr4704/web_app_example#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
