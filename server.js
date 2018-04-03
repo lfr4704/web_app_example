@@ -3,9 +3,11 @@
 //then create gitignore file. refer to this link for how to create file in windows https://stackoverflow.com/questions/10744305/how-to-create-gitignore-file
 
 let express = require('express');
+let bodyParser = require('body-parser');
 let app = express();  //this sets reference to an instance of express
 
 app.use(express.static(__dirname));
+app.use(bodyParser.json());
 
 let messages = [
 { name: 'Tim', message: 'Hi'},
@@ -17,6 +19,10 @@ app.get('/messages', (req, res) =>{
 	res.send(messages);
 });
 
+app.post('/messages', (req, res) =>{
+	console.log(req.body);
+	res.sendStatus(200);
+});
 
 //for windows to run "localhost:3000/messages" the server.js needs be running in the command line "node server.js"
 let server = app.listen(3000, () => {
