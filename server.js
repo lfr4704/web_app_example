@@ -1,10 +1,13 @@
 //create package jsaon to save all dependencies first by typing the following in command line: (npm init --yes) to create default package
 //then install express.js dependency (npm install -S express) or (npm install express --save) "-S" saves the dependency to json package
 //then create gitignore file. refer to this link for how to create file in windows https://stackoverflow.com/questions/10744305/how-to-create-gitignore-file
-
+//then install nodemon (npm install -g nodemom) "-g" means globally so it can be used no matter what project you are working on 
+//then install socket.io (npm install -s socket.io)
 let express = require('express');
 let bodyParser = require('body-parser');
 let app = express();  //this sets reference to an instance of express
+let http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -22,11 +25,16 @@ app.get('/messages', (req, res) =>{
 
 app.post('/messages', (req, res) =>{
 	messages.push(req.body);
+	io.emit('message', req.body);
 	res.sendStatus(200);
 });
 
+io.on('connection', (socket)=>{
+console.log('a user connected');
+});
+
 //for windows to run "localhost:3000/messages" the server.js needs be running in the command line "node server.js"
-let server = app.listen(3000, () => {
+let server = http.listen(3000, () => {
     
     console.log("server is listening on port", server.address().port);
 });

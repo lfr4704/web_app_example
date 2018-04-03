@@ -20,6 +20,10 @@
   "homepage": "https://github.com/lfr4704/web_app_example#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
   }
 }
