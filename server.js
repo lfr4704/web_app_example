@@ -4,6 +4,8 @@
 //then install nodemon (npm install -g nodemom) "-g" means globally so it can be used no matter what project you are working on 
 //then install socket.io (npm install -s socket.io)  socket allows you to connect both frontend and backend
 //then install mongoose (npm install -s mongoose) Mongoose is a database that works with mongoDB
+//for testing install jasmine (npm install -g jasmine), then create spec folder with (jasmine init). Then change the test to in package.json to "jasmine" and save. 
+//run test with (npm test)
 let express = require('express');
 let bodyParser = require('body-parser');
 let app = express();  //this sets reference to an instance of express
@@ -30,6 +32,9 @@ app.get('/messages', (req, res) =>{
 });
 
 app.post('/messages', async (req, res) =>{
+	
+	try {
+		
 	let message = new Message(req.body);
 
 //promise starts here
@@ -45,11 +50,13 @@ app.post('/messages', async (req, res) =>{
 			io.emit('message', req.body);
 		
 		res.sendStatus(200);
-	
-	//.catch((err) =>{
-	//	res.sendStatus(500);
-	//	return console.error(err);
-	//});
+
+	} catch (error) {
+	res.sendStatus(500);
+	return console.error(error);
+		} finally {
+			console.log('message post called')
+		}
 
 });
 
