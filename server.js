@@ -29,27 +29,30 @@ app.get('/messages', (req, res) =>{
 	
 });
 
-app.post('/messages', (req, res) =>{
+app.post('/messages', async (req, res) =>{
 	let message = new Message(req.body);
 
-	message.save((err)=>{
-		if (err)
-			sendStatus(500);
-			
-		Message.findOne({message: 'badword'}, (err, censored)=>{
-			if (censored) {
-				console.log('censored words found', censored)
-				Message.remove({_id: censored.id}, (err)=>{
-				console.log('removed censored message');
-				})
-			}
-		});
+//promise starts here
+	let savedMesaage = await message.save()
 
-		io.emit('message', req.body);
+	console.log('saved');
+
+	let censored = await Message.findOne({message: 'badword'});
+	
+		if(censored)
+			await Message.remove({_id: censored.id});
+		else 
+			io.emit('message', req.body);
+		
 		res.sendStatus(200);
-	});
+	
+	//.catch((err) =>{
+	//	res.sendStatus(500);
+	//	return console.error(err);
+	//});
 
 });
+
 
 io.on('connection', (socket)=>{
 console.log('a user connected');
